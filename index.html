@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Flood Relief Card Maker</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<style type="text/css">
+    @font-face {
+        font-family: "Meera";
+        src: url("Meera.ttf");
+    }
+    body{
+        
+        font-family: "Meera";
+        font-weight: bold;
+    }
+
+    body{
+        margin:0;
+        padding: 0;
+        background: #EEEEEE;
+    }
+    #form{
+        max-width: 100%;
+        width: 400px;
+        min-height: 100vh;
+        background: #FFFFFF;
+        box-shadow: 0 0 3px rgba(0,0,0,0.1);
+        margin:auto;
+    }
+    #form > div{
+        padding: 30px 30px;
+    }
+    #canvas-container{
+        display: none;
+    }
+    .box-3{
+        font-weight: bold;
+        color:#6789FF;
+        border:3px solid #6789FF;
+        text-align: center;
+        padding: 10px 8px;
+        border-radius: 3px;
+    }    
+
+    .b-pink{
+        color: #FFFFFF;
+        background-color:#33aacc;
+        font-size: 22px;
+    }
+    .text-muted{
+        opacity: 0.5;
+    }
+    .close{
+        position: fixed;
+        top:20px;
+        right: 20px;
+        font-weight: bold;
+        display:inline-block;
+        width:50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #FFFFFF;
+        border:2px solid #000000;
+        text-align:center;
+        line-height:50px;
+        cursor: pointer;
+        font-size: 20px;
+    }
+</style>
+<body>
+    <div id="form">
+        <div class="col-md-12">
+            <h4 class="mb-5 box-3">സഹായം അഭ്യര്‍ഥിച്ചുകൊണ്ടുള്ള കാര്‍ഡ് നിര്‍മിക്കാം</h4>
+            <div class="needs-validation" novalidate="">
+
+                
+                <div class="mb-4">
+                    <label for="country" style="color:#52156d;">ഏത് തരം സഹായം ആണ് വേണ്ടത്</label>
+                    <select class="custom-select d-block w-100 b-pink" id="icon" required="">
+                        <option value="image1">ഭക്ഷണം</option>
+                        <option value="image2">വൊളന്‍റീയര്‍</option>
+                    </select>
+                </div>
+        
+                <hr/> 
+
+                <div class="mb-3">
+                    <label for="username">ജില്ല <span class="text-muted">(ഉദാ : വയനാട്)</span></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="district" >
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="username">സ്ഥലം  <span class="text-muted">(ഉദാ : മേപ്പാടി)</span></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="area" >
+                    </div>
+                </div>
+                                    
+                <div class="mb-3">
+                    <label for="username">ആവശ്യമായ സഹായം <br/><span class="text-muted">(ഉദാ : 100 പേര്‍ക്കുള്ള ഭക്ഷണം)</span></label>
+                    <div class="input-group">
+                        <textarea class="form-control" id="message" ></textarea>
+                    </div>
+                </div>
+                                    
+                <div class="mb-3">
+                    <label for="username">സന്ദേശം ലഭിച്ച സമയം <span class="text-muted">(ഉദാ : 10 August 2019 - 4:PM)</span></label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="timestamp">
+                    </div>
+                </div>                    
+                                    
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="cc-name">പേര് 1</label>
+                        <input type="text" class="form-control" id="name1" placeholder="" required="">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="cc-number">ഫോണ്‍ നമ്പര്‍</label>
+                        <input type="text" class="form-control" id="contact1" placeholder="" required="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="cc-name">പേര് 2</label>
+                        <input type="text" class="form-control" id="name2" placeholder="" required="">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="cc-number">ഫോണ്‍ നമ്പര്‍</label>
+                        <input type="text" class="form-control" id="contact2" placeholder="" required="">
+                    </div>
+                </div>
+
+                <br/><br/>
+                    
+                <button class="btn btn-primary btn-lg btn-block" id="render" type="submit">കാര്‍ഡ് നീര്‍മിക്കാം</button>
+                <br/>                   
+
+            </div>
+        </div>
+    </div>
+    <div id="canvas-container">
+        <canvas id="canvas"></canvas>        
+        <span class="close">x</span>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#render").click(function(){
+                renderCanvas();
+                $("#form").hide();
+                $("#canvas-container").show();
+                return false;
+            });
+            $(".close").click(function(){
+                $("#canvas-container").hide();
+                $("#form").show();
+                return false;
+            });
+
+        });
+    </script>
+</body>
+</html>
